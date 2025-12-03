@@ -1,5 +1,5 @@
 # P1_WishList
-- The user should be able to login to thier account to creat/view/modivy their wishlists
+- The user should be able to login to thier account to creat/view/modify their wishlists
 - Relations:
 - One user can have many wishlists
   - A wishlist can only belong to one user

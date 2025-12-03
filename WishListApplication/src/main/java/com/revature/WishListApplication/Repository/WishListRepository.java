@@ -1,8 +1,6 @@
-package com.example.repository;
+package com.revature.WishListApplication.Repository;
 
 import java.sql.*;
-import java.util.List;
-import java.util.ArrayList;
 
 public class WishListRepository{
     private static final String Postgre_URL = "jdbc:postgresql://localhost:5432/postgres";
@@ -17,8 +15,8 @@ public class WishListRepository{
                 String sql =
                     "CREATE TABLE User (\n" +
                     "    userID      SERIAL PRIMARY KEY,\n" +
-                    "    username    VARCHAR(100) NOT NULL UNIQUE,\n" +
-                    "    password    VARCHAR(200) NOT NULL\n" +
+                    "    username    VARCHAR(50) NOT NULL UNIQUE,\n" +
+                    "    password    VARCHAR(50) NOT NULL\n" +
                     ");\n" +
 
                     "CREATE TABLE Wishlist (\n" +
@@ -31,12 +29,12 @@ public class WishListRepository{
 
                     "CREATE TABLE Brands (\n" +
                     "    brandID     SERIAL PRIMARY KEY,\n" +
-                    "    name        VARCHAR(150) NOT NULL\n" +
+                    "    name        VARCHAR(100) NOT NULL\n" +
                     ");\n" +
 
                     "CREATE TABLE Item (\n" +
                     "    itemID      SERIAL PRIMARY KEY,\n" +
-                    "    name        VARCHAR(150) NOT NULL,\n" +
+                    "    name        VARCHAR(100) NOT NULL,\n" +
                     "    brandID     INT NOT NULL,\n" +
                     "    price       DECIMAL(10,2) NOT NULL,\n" +
                     "    FOREIGN KEY (brandID)\n" +
