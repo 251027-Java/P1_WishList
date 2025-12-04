@@ -1,17 +1,23 @@
 package com.revature.WishListApplication.Model;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.Data;
+import lombok.ToString;
+
 import java.io.Serializable;
 
-public class WishlistItemId implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Embeddable
+@Data
+public class WishlistItemID implements Serializable {
+    @ManyToOne()
+    @JoinColumn(name = "wishlistId")
+    @ToString.Exclude
+    private Wishlist wishlist;
 
-    private String wishlistId;
-    private String itemId;
-
-    public WishlistItemId() {}
-
-    public WishlistItemId(String wishlistId, String itemId) {
-        this.wishlistId = wishlistId;
-        this.itemId = itemId;
-    }
+    @ManyToOne()
+    @JoinColumn(name = "itemId")
+    @ToString.Exclude
+    private Item item;
 }
