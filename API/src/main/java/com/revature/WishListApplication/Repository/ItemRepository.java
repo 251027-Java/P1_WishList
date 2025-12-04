@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.revature.WishListApplication.Model.Item;
 
 public interface ItemRepository extends JpaRepository<Item, String> {
-    List<Item> findByName(String name);
+    List<Item> findByItemName(String name);
 }

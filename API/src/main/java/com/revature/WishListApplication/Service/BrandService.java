@@ -22,7 +22,7 @@ public class BrandService {
     }
 
     public List<BrandDTO> searchByBrandname(String name){
-        return repository.findByName(name).stream().map(this::BrandToDto).toList();
+        return repository.findByBrandName(name).stream().map(this::BrandToDto).toList();
     }
 
     public BrandDTO create(BrandWOIDDTO dto){
