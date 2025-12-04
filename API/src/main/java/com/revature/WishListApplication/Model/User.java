@@ -15,10 +15,10 @@ public class User {
     @GeneratedValue
     private String userId;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true, nullable = false)
     private String userUsername;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String userPassword;
 
     public User(){}

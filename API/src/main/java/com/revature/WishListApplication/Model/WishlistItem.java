@@ -16,19 +16,21 @@ import lombok.ToString;
 public class WishlistItem {
 
     @Id
-    private String itemId;
-
-    @Id
-    private String wishlistId;
-
     @ManyToOne()
     @JoinColumn(name = "itemId", insertable = false, updatable = false)
     @ToString.Exclude
     private Item item;
 
+    @Id
     @ManyToOne()
     @JoinColumn(name = "wishlistId", insertable = false, updatable = false)
     @ToString.Exclude
     private Wishlist wishlist;
 
+    public WishlistItem() {}
+
+    public WishlistItem(Item item, Wishlist wishlist) {
+        this.item = item;
+        this.wishlist = wishlist;
+    }
 }
