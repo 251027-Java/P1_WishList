@@ -22,7 +22,7 @@ public class UserService {
     }
 
     public List<UserDTO> searchByUsername(String username){
-        return repository.findByUsername(username).stream().map(this::UserToDto).toList();
+        return repository.findByUserUsername(username).stream().map(this::UserToDto).toList();
     }
 
     public UserDTO create(UserWOIDDTO dto){

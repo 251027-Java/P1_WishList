@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.revature.WishListApplication.Model.User;
 
 public interface UserRepository extends JpaRepository<User, String> {
-    List<User> findByUsername(String username);
+    List<User> findByUserUsername(String username);
 }
