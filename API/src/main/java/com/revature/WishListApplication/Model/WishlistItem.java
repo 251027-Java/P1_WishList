@@ -1,9 +1,6 @@
 package com.revature.WishListApplication.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
@@ -11,13 +8,7 @@ import lombok.ToString;
 @Table(name = "WishlistItem")
 @Data
 public class WishlistItem {
-    @ManyToOne()
-    @JoinColumn(name = "wishlistId")
-    @ToString.Exclude
-    private Wishlist wishlist;
 
-    @ManyToOne()
-    @JoinColumn(name = "itemId")
-    @ToString.Exclude
-    private Item item;
+    @EmbeddedId
+    private WishlistItemID wishListItemId;
 }
