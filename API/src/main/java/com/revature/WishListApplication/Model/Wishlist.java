@@ -21,4 +21,10 @@ public class Wishlist {
     @JoinColumn(name = "userId")
     @ToString.Exclude
     private User user;
+
+    public Wishlist() {}
+
+    public Wishlist(User user) {
+        this.user = user;
+    }
 }
