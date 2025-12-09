@@ -1,8 +1,10 @@
-package com.revature.ExpenseReport;
+package com.revature.WishListApplication.Model;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.revature.WishListApplication.BasicAuthInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
