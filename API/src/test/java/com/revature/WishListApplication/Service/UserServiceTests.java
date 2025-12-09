@@ -12,8 +12,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
@@ -23,11 +28,6 @@ public class UserServiceTests {
 
     @InjectMocks
     UserService service;
-
-    // User to Dto for utility
-    private UserDTO UserToDto(User user){
-        return new UserDTO(user.getUserId(), user.getUserUsername(), user.getUserPassword());
-    }
 
     // User Account Creation
     @Test
@@ -42,10 +42,10 @@ public class UserServiceTests {
         User u4 = new User();
         u3.setUserUsername("myuser");
 
-        Mockito.when(repository.save(u1)).thenReturn(u1);
-        Mockito.when(repository.save(u2)).thenReturn(u2);
-        Mockito.when(repository.save(u3)).thenReturn(u3);
-        Mockito.when(repository.save(u4)).thenReturn(u4);
+        when(repository.save(u1)).thenReturn(u1);
+        when(repository.save(u2)).thenReturn(u2);
+        when(repository.save(u3)).thenReturn(u3);
+        when(repository.save(u4)).thenReturn(u4);
 
 
         // Act
@@ -82,13 +82,58 @@ public class UserServiceTests {
     }
 
     // User Account Retrieval
+
+    // Check get user by username
+//    public UserDTO searchByUsername(String username){
+//        Optional<User> user = repository.findByUserUsername(username);
+//
+//        return (user.isPresent()) ? UserToDto(user.get()) : null;
+//    }
     @Test
-    public void testRetrieval() {
-        // Check get all users
-        // Check get user by username
-        // Check get user by Id
-        // Check unsuccessful for each one (user doesn't exist)
+    public void happyPath_searchByUsername_returnsUserDTO() {
+        // Arrange
+        String id = "test";
+        String username = "username";
+
+        // Load fake user into repo
+        User user = new User("username", "somePassword");
+        user.setUserId(id);
+        when(repository.findByUserUsername(username)).thenReturn(Optional.of(user));
+
+        // Expected: UserDTO with the requested username
+        UserDTO expected = new UserDTO(id, "username", "somePassword");
+
+        // Act
+        UserDTO actual = service.searchByUsername(username);
+
+        // Assert
+        assertThat(actual).isEqualTo(expected);
     }
+
+//    public UserDTO getById(String id){
+//        return UserToDto(repository.findById(id).get());
+//    }
+    // Check get user by Id
+    @Test
+    public void happyPath_getById_returnsUserDTO() {
+        // Arrange
+        String id = "thisIsTheId";
+        User savedUser = new User("manu", "password123");
+        savedUser.setUserId(id);
+
+        UserDTO expected = new UserDTO(id, "manu", "password123");
+
+        when(repository.findById(id)).thenReturn(Optional.of(savedUser));
+
+        // Act
+        UserDTO actual = service.getById(id);
+
+        // Assert
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    // Check get all users
+    // Check unsuccessful for each one (user doesn't exist)
 
     // User Account Updates
     @Test
