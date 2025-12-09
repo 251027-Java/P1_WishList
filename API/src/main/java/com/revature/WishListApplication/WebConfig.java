@@ -1,4 +1,4 @@
-package com.revature.ExpenseReport;
+package com.revature.WishListApplication;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
