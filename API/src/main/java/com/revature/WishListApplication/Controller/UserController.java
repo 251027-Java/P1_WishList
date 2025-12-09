@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public List<UserDTO> search(@RequestParam String merchant) {
-        return service.searchByUsername(merchant);
+    public UserDTO search(@RequestParam String username) {
+        return service.searchByUsername(username);
     }
 
     @PostMapping
