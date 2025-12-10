@@ -9,16 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
@@ -29,66 +29,71 @@ public class UserServiceTests {
     @InjectMocks
     UserService service;
 
-    // User Account Creation
+/*  ---------------------
+    User Account Creation
+    --------------------- */
+
     @Test
-    public void testCreation() {
+    public void happyPath_create_returnsUserDTO() {
         // Arrange
-        User u1 = new User("manu", "password");
-        User u2 = new User("manu", "secret");
+        // Create user that will be added to db
+        String id = "id";
+        User user = new User("user", "secret");
+        user.setUserId(id);
+        // Convert user into user without id so it can be used as input
+        UserWOIDDTO input = new UserWOIDDTO(user.getUserUsername(),
+                user.getUserPassword());
 
-        User u3 = new User();
-        u3.setUserPassword("abc");
+        // expected result is userDTO
+        UserDTO expected = new UserDTO(id, "user", "secret");
 
-        User u4 = new User();
-        u3.setUserUsername("myuser");
+        when(repository.save(any())).thenReturn(user);
 
-        when(repository.save(u1)).thenReturn(u1);
-        when(repository.save(u2)).thenReturn(u2);
-        when(repository.save(u3)).thenReturn(u3);
-        when(repository.save(u4)).thenReturn(u4);
+        // Method will check whether username has already been used
+        when(repository.findByUserUsername("user")).thenReturn(Optional.empty());
 
 
         // Act
-        UserDTO result_test1 = service.create(new UserWOIDDTO(u1.getUserUsername(),
-                u1.getUserPassword())); // should successfully create
-        service.create(new UserWOIDDTO(u1.getUserUsername(),
-                u1.getUserPassword())); // DUPLICATE - should not create
-        service.create(new UserWOIDDTO(u2.getUserUsername(),
-                u2.getUserPassword())); // DUPLICATE USERNAME - should not create
-        service.create(new UserWOIDDTO(u3.getUserUsername(),
-                u3.getUserPassword())); // MISSING USERNAME - should not create
-        service.create(new UserWOIDDTO(u4.getUserUsername(),
-                u4.getUserPassword())); // MISSING PASSWORD - should not create
-
+        UserDTO actual = service.create(input);
 
         // Assert
+        // Actual userDTO should match the expected result
+        assertThat(actual).isEqualTo(expected);
+        // Verify that repository.save has only been run once
+        verify(repository, times(1)).save(any(User.class));
+    }
+    @Test
+    public void create_usernameAlreadyExists_throwsException() {
+        // Arrange
+        // Create user that we will try to add to db
+        String id = "id";
+        User user = new User("user", "secret");
+        user.setUserId(id);
+        // Convert user into user without id so it can be used as input
+        UserWOIDDTO input = new UserWOIDDTO(user.getUserUsername(),
+                user.getUserPassword());
 
-        // Check account creation
-        assertEquals(u1.getUserUsername(), result_test1.userUsername());
-        assertEquals(u1.getUserPassword(), result_test1.userPassword());
-        Mockito.verify(repository).save(u1); // verify that u1 was saved to repo
+        // Method will check whether username has already been used
+        when(repository.findByUserUsername("user")).thenReturn(Optional.of(user));
 
-        /*
-         * Verify that save() has only been called once, since User objects with:
-         * Existing usernames,
-         * Same username and password,
-         * or missing username/password
-         * Should NOT be added to our DB
-         */
-        Mockito.verify(repository).save(any());
+        // Expected result is that a ResponseStatusException will be thrown
+        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+            UserDTO actual = service.create(input);
+        });
 
-        // TODO: Possible exception handling to test for??
+        // Check the exception message
+        assertThat(exception.getMessage()).contains("Username already exists");
 
+        // Verify that nothing has been saved to the repository
+        verify(repository, times(0)).save(any());
     }
 
-    // User Account Retrieval
 
-    // Check get user by username
-//    public UserDTO searchByUsername(String username){
-//        Optional<User> user = repository.findByUserUsername(username);
-//
-//        return (user.isPresent()) ? UserToDto(user.get()) : null;
-//    }
+/*  ----------------------
+    User Account Retrieval
+    ---------------------- */
+
+    // Check searchByUsername()
     @Test
     public void happyPath_searchByUsername_returnsUserDTO() {
         // Arrange
@@ -109,11 +114,20 @@ public class UserServiceTests {
         // Assert
         assertThat(actual).isEqualTo(expected);
     }
+    @Test
+    public void searchByUsername_usernameDoesNotExist_returnsNull() {
+        // Arrange
+        String username = "wrong";
 
-//    public UserDTO getById(String id){
-//        return UserToDto(repository.findById(id).get());
-//    }
-    // Check get user by Id
+        // Act
+        // Since there is no account with username wrong, the UserDTO should be null
+        UserDTO actual = service.searchByUsername(username);
+
+        // Assert
+        assertNull(actual);
+    }
+
+    // Check getById()
     @Test
     public void happyPath_getById_returnsUserDTO() {
         // Arrange
@@ -131,22 +145,128 @@ public class UserServiceTests {
         // Assert
         assertThat(actual).isEqualTo(expected);
     }
-
-    // Check get all users
-    // Check unsuccessful for each one (user doesn't exist)
-
-    // User Account Updates
     @Test
-    public void testUpdates() {
-        // Check successful update
-        // Check for when user doesn't exist
-        // Check for incomplete information in dto
+    public void getById_idDoesNotExist_returnsNull() {
+        // Arrange
+        String id = "thisIsn'tTheId";
+
+        //Act
+        // Since this id is not tied to any account, the UserDTO should be null
+        UserDTO actual = service.getById(id);
+
+        // Assert
+        assertNull(actual);
     }
 
-    // User Account Deletion
+    // Check getAllUsers()
     @Test
-    public void testDeletion() {
-        // Check successful deletion
-        // Check for when user doesn't exist
+    public void happyPath_getAllUsers_returnsListOfUserDTO() {
+        // Arrange
+        User user1 = new User("brody", "password1");
+        user1.setUserId("bId");
+        User user2 = new User("alvey", "password2");
+        user2.setUserId("aId");
+        User user3 = new User("natalia", "password3");
+        user3.setUserId("nId");
+
+        List<User> userList = List.of(user1, user2, user3);
+
+        // Expected: List<UserDTO> of all users
+        List<UserDTO> expected = userList.stream().map( user -> {
+            return new UserDTO(user.getUserId(), user.getUserUsername(),
+                    user.getUserPassword());
+        }).toList();
+
+        when(repository.findAll()).thenReturn(userList);
+
+        // Act
+        List<UserDTO> actual = service.getAllUsers();
+
+        // Assert
+        assertThat(actual)
+                .usingRecursiveFieldByFieldElementComparator()
+                .isEqualTo(expected);
+    }
+    @Test
+    public void getAllUsers_noCurrentUsers_returnsEmptyListOfUserDTO() {
+        // Act
+        List<UserDTO> actual = service.getAllUsers(); // empty list
+
+        // Assert
+        assertThat(actual).isEmpty();
+    }
+
+
+/*  --------------------
+    User Account Updates
+    -------------------- */
+
+    @Test
+    public void happyPath_update_returnsUserDTO() {
+        // Arrange
+        // Create a user
+        String id = "id";
+        User user = new User("manasvini", "password");
+        user.setUserId(id);
+
+        // Expected result is userDTO with different username and password
+        User updated = new User("manu", "secret");
+        updated.setUserId(id);
+        UserDTO expected = new UserDTO(updated.getUserId(),
+                updated.getUserUsername(), updated.getUserPassword());
+
+        // When repository checks if user exists, it should get our user
+        when(repository.findById(id)).thenReturn(Optional.of(user));
+
+        // When the updated user is saved, we return our updated user
+        when(repository.save(any(User.class))).thenReturn(updated);
+
+        // Act
+        UserDTO actual = service.update(id, new UserDTO(id, "manu", "secret"));
+
+        // Assert
+        // Actual userDTO matches the updates we wanted
+        assertThat(actual).isEqualTo(expected);
+
+    }
+    @Test
+    public void update_accountDoesNotExist_ThrowsException() {
+        // Arrange
+        String id = "id";
+        // Create our input
+        User updated = new User("manu", "secret");
+        updated.setUserId(id);
+        UserDTO input = new UserDTO(updated.getUserId(), updated.getUserUsername(),
+                updated.getUserPassword());
+
+        // When method checks if account exists, find that account does not exist
+        when(repository.findById(id)).thenReturn(Optional.empty());
+
+        // Assert
+        // Expected: a responseStatusException with a not_found message should be thrown
+        assertThrows(ResponseStatusException.class, () -> {
+            UserDTO result = service.update(id, input);
+        }, "NOT_FOUND");
+
+        // No calls should have been made to the repository
+        verify(repository, times(0)).save(any(User.class));
+    }
+
+
+/*  ---------------------
+    User Account Deletion
+    --------------------- */
+
+    @Test
+    public void happyPath_delete_returnsVoid() {
+        // Arrange
+        String id = "id";
+
+        // Act
+        service.delete(id);
+
+        // Assert
+        // verify that repository's delete method was called
+        verify(repository).deleteById(id);
     }
 }

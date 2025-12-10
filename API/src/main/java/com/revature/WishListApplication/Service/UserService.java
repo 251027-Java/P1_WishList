@@ -42,7 +42,8 @@ public class UserService {
     }
 
     public UserDTO getById(String id){
-        return UserToDto(repository.findById(id).get());
+        Optional<User> user = repository.findById(id);
+        return (user.isPresent()) ? UserToDto(user.get()) : null;
     }
     
     public UserDTO update(String id, UserDTO dto){
