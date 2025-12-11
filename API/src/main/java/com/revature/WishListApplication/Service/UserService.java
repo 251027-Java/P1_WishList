@@ -24,9 +24,9 @@ public class UserService {
     }
 
     public UserDTO searchByUsername(String username){
-        Optional<User> user = repository.findByUserUsername(username);
-
-        return (user.isPresent()) ? UserToDto(user.get()) : null;
+        return repository.findByUserUsername(username)
+                .map(this::UserToDto)
+                .orElse(null);
     }
 
     public UserDTO create(UserWOIDDTO dto){
@@ -42,8 +42,9 @@ public class UserService {
     }
 
     public UserDTO getById(String id){
-        Optional<User> user = repository.findById(id);
-        return (user.isPresent()) ? UserToDto(user.get()) : null;
+        return repository.findById(id)
+                .map(this::UserToDto)
+                .orElse(null);
     }
     
     public UserDTO update(String id, UserDTO dto){

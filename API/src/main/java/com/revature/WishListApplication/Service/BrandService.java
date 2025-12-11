@@ -30,10 +30,12 @@ public class BrandService {
         return BrandToDto(repository.save(entity));
     }
 
-    public BrandDTO getById(String id){
-        return BrandToDto(repository.findById(id).get());
+    public BrandDTO getById(String id) {
+        return repository.findById(id)
+                .map(this::BrandToDto)
+                .orElse(null);
     }
-    
+
     public BrandDTO update(String id, BrandDTO dto){
         Brand brand = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         brand.setBrandName(dto.brandName());
