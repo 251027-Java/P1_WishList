@@ -261,6 +261,9 @@ public class UserServiceTests {
     public void happyPath_delete_returnsVoid() {
         // Arrange
         String id = "id";
+        User user = new User("something", "secret");
+        user.setUserId(id);
+        when(repository.findById(id)).thenReturn(Optional.of(user));
 
         // Act
         service.delete(id);
@@ -268,5 +271,13 @@ public class UserServiceTests {
         // Assert
         // verify that repository's delete method was called
         verify(repository).deleteById(id);
+    }
+    @Test
+    public void delete_userDoesNotExist() {
+        // Act
+        service.delete("id");
+
+        // Assert
+        verify(repository, times(0)).deleteById("id");
     }
 }

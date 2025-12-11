@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +24,10 @@ import static org.mockito.Mockito.*;
 public class BrandServiceTests {
     // BrandService Tests Using Mocks
     @Mock
-    BrandRepository repository;
+    private BrandRepository repository;
 
     @InjectMocks
-    BrandService service;
+    private BrandService service;
 
 /*  ---------------------
     Brand Creation Tests
@@ -197,17 +196,31 @@ public class BrandServiceTests {
 
         verify(repository, times(0)).save(any());
     }
-    @Test
-    public void testUpdates() {
-        // Check successful update
-        // Check for when Brand doesn't exist
-        // Check for incomplete information in dto
-    }
 
-    // Brand  Deletion
+
+/*  ----------------------
+    Brand Deletion Tests
+    ---------------------- */
+
     @Test
-    public void testDeletion() {
-        // Check successful deletion
-        // Check for when Brand doesn't exist
+    public void happyPath_delete_callsRepositoryDelete() {
+        // Arrange
+        Brand brand = new Brand("something");
+        brand.setBrandId("id");
+        when(repository.findById("id")).thenReturn(Optional.of(brand));
+
+        // Act
+        service.delete("id");
+
+        // Assert
+        verify(repository).deleteById("id");
+    }
+    @Test
+    public void delete_brandDoesNotExist() {
+        // Act
+        service.delete("id");
+
+        // Assert
+        verify(repository, times(0)).deleteById("id");
     }
 }

@@ -44,7 +44,8 @@ public class BrandService {
     }
 
     public void delete(String id){
-        repository.deleteById(id);
+        if (repository.findById(id).isPresent())
+            repository.deleteById(id);
     }
 
     private BrandDTO BrandToDto(Brand brand){

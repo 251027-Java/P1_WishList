@@ -56,7 +56,8 @@ public class UserService {
     }
 
     public void delete(String id){
-        repository.deleteById(id);
+        if(repository.findById(id).isPresent())
+            repository.deleteById(id);
     }
 
     private UserDTO UserToDto(User user){
