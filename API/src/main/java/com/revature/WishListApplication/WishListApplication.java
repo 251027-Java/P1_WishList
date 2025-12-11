@@ -18,6 +18,8 @@ import com.revature.WishListApplication.Repository.ItemRepository;
 import com.revature.WishListApplication.Repository.UserRepository;
 import com.revature.WishListApplication.Repository.WishlistItemRepository;
 import com.revature.WishListApplication.Repository.WishlistRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class WishListApplication {
@@ -26,12 +28,18 @@ public class WishListApplication {
 		SpringApplication.run(WishListApplication.class, args);
 	}
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 	@Bean
-    CommandLineRunner seedData (UserRepository userRepository, ItemRepository itemRepository, BrandRepository brandRepository, WishlistRepository wishlistRepository, WishlistItemRepository wishlistItemRepository) {
+    CommandLineRunner seedData (PasswordEncoder encoder, UserRepository userRepository,
+                                ItemRepository itemRepository, BrandRepository brandRepository, WishlistRepository wishlistRepository, WishlistItemRepository wishlistItemRepository) {
         return args -> {
-            var u1 = new User("brody", "password1");
-            var u2 = new User("manu", "password2");
-            var u3 = new User("natalia", "password3");
+            var u1 = new User("brody", encoder.encode("password1"));
+            var u2 = new User("manu", encoder.encode("password2"));
+            var u3 = new User("natalia", encoder.encode("password3"));
             userRepository.saveAll(List.of(u1, u2, u3));
             var b1 = new Brand("Apple");
             var b2 = new Brand("Sony");
