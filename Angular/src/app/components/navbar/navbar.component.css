@@ -1,0 +1,26 @@
+.clean-nav {
+    background-color: white;
+    padding: 1rem 0;
+}
+
+/* Title on the left */
+.nav-title {
+    font-family: 'DM Sans';
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: black;
+    letter-spacing: -2px;
+}
+
+/* Center nav links */
+.nav-center .nav-link {
+    font-family: 'DM Sans';
+    color: black;
+    font-weight: 600;
+    margin: 0 1rem;
+    font-size: 1rem;
+}
+
+.nav-center .nav-link:hover {
+    text-decoration: underline;
+}
