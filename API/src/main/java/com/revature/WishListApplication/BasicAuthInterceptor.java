@@ -29,6 +29,7 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String authHeader = request.getHeader("Authorization");
+        String error = "";
 
         // is the header there, is it the right kind?
         if (authHeader != null && authHeader.startsWith("Basic ")){
@@ -42,9 +43,13 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
             if (parts.length == 2) {
                 String username = parts[0];
                 String password = parts[1];
+                error += username;
+                error += " ";
+                error += password;
 
                 // check if the user is in the db
                 Optional<User> user = repo.findByUserUsername(username);
+                System.out.println("THE USER: " + user.isPresent());
 
 //                // check if the password is correct
 //                if (user.isPresent() && user.get().getPassword().equals(password)) {
@@ -58,7 +63,7 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
         }
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("Unauthorized: invalid credentials");
+        response.getWriter().write("Unauthorized: invalid credentials" + error);
         return false;
     }
 }

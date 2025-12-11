@@ -21,6 +21,6 @@ public class WebConfig implements WebMvcConfigurer {
         // that are scanning requests as they come in
         reg.addInterceptor(basicAuthInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/hello");
+                .excludePathPatterns("/api/items");
     }
 }
