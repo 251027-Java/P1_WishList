@@ -10,3 +10,4 @@
 
 - The user should be able to itneract with the interfece and make changes in the backend
 - This program should have 50% test coverage
+-- Add '-XX:+EnableDynamicAgentLoading -Xshare:off" to the CLI arguments or in run configurations in IntelliJ to avoid warnings about inline Mocking
