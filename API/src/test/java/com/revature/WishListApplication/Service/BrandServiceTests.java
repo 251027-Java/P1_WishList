@@ -9,45 +9,55 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class BrandServiceTests {
     // BrandService Tests Using Mocks
     @Mock
-    BrandRepository repository;
+    private BrandRepository repository;
 
     @InjectMocks
-    BrandService service;
+    private BrandService service;
 
-    // Brand Creation
+/*  ---------------------
+    Brand Creation Tests
+    --------------------- */
+
     @Test
-    public void testCreation() {
-        // Check successful creation
-
+    public void happyPath_create_returnsBrandDTO() {
         // Arrange
-        Brand b1 = new Brand("Lulu lemon");
-        Mockito.when(repository.save(b1)).thenReturn(b1);
+        Brand brand = new Brand("Lululemon");
+        brand.setBrandId("id");
+
+        BrandWOIDDTO input = new BrandWOIDDTO("Lululemon");
+
+        BrandDTO expected = new BrandDTO("id", "Lululemon");
+
+        when(repository.save(any(Brand.class))).thenReturn(brand);
 
         // Act
-
-        BrandDTO result_test1 = service.create(new BrandWOIDDTO(b1.getBrandName()));
-        // should successfully create
+        BrandDTO actual = service.create(input);
 
         // Assert
-        // Check brand creation
-        assertEquals(b1.getBrandName(), result_test1.brandName());
-        Mockito.verify(repository).save(b1); // verify that b1 was saved to repo
+        assertThat(actual).isEqualTo(expected);
+        verify(repository, times(1)).save(any(Brand.class));
     }
 
-    // Brand Retrieval
+
+/*  ----------------------
+    Brand Retrieval Tests
+    ---------------------- */
+
     @Test
     public void happyPath_getById_returnsBrandDTO() {
         // Arrange
@@ -69,32 +79,148 @@ public class BrandServiceTests {
     }
 
     @Test
-    public void edgeCase_IdDoesNotExist_getById_throwsException() {
-        //
+    public void getById_idDoesNotExist_returnsNull() {
+        // Arrange
+        when(repository.findById("missing")).thenReturn(Optional.empty());
+
+        // Act
+        BrandDTO actual = service.getById("missing");
+
+        // Assert
+        assertNull(actual);
+    }
+
+    // Check getByBrandName
+    @Test
+    public void happyPath_searchBrandname_returnsListOfBrandDTO() {
+        // Arrange
+        Brand brand = new Brand("Prada");
+        brand.setBrandId("pid");
+
+        List<BrandDTO> expected = List.of(new BrandDTO("pid", "Prada"));
+
+        when(repository.findByBrandName("Prada")).thenReturn(List.of(brand));
+
+        // Act
+        List<BrandDTO> actual = service.searchByBrandname("Prada");
+
+        // Assert
+        assertThat(actual)
+                .usingRecursiveFieldByFieldElementComparator()
+                .isEqualTo(expected);
+    }
+    @Test
+    public void searchBrandname_brandDoesNotExist_returnsEmptyList() {
+        // Arrange
+        when(repository.findByBrandName("missing")).thenReturn(List.of());
+
+        // Act
+        List<BrandDTO> actual = service.searchByBrandname("missing");
+
+        // Assert
+        assertThat(actual).isEmpty();
+    }
+
+    // getAllBrands()
+    @Test
+    public void happyPath_getAllBrands_returnsListOfBrandDTO(){
+        // Arrange
+        Brand b1 = new Brand("Nike");  b1.setBrandId("n");
+        Brand b2 = new Brand("Adidas"); b2.setBrandId("a");
+        Brand b3 = new Brand("Puma");   b3.setBrandId("p");
+
+        List<Brand> brands = List.of(b1, b2, b3);
+
+        List<BrandDTO> expected = brands.stream().map(b ->
+                new BrandDTO(b.getBrandId(), b.getBrandName())).toList();
+
+        when(repository.findAll()).thenReturn(brands);
+
+        // Act
+        List<BrandDTO> actual = service.getAllBrands();
+
+        // Assert
+        assertThat(actual)
+                .usingRecursiveFieldByFieldElementComparator()
+                .isEqualTo(expected);
+    }
+    @Test
+    public void getAllBrands_noBrands_returnsEmptyList() {
+        // Arrange
+        when(repository.findAll()).thenReturn(List.of());
+
+        // Act
+        List<BrandDTO> actual = service.getAllBrands();
+
+        // Assert
+        assertThat(actual).isEmpty();
     }
 
 
+/*  --------------------
+    Brand Update Tests
+    -------------------- */
 
     @Test
-    public void testRetrieval() {
-        // Check get all Brands
-        // Check get Brand by Brand name
-        // Check get Brand by Id
-        // Check unsuccessful for each one (Brand doesn't exist)
+    public void happyPath_update_returnsBrandDTO() {
+        // Arrange
+        String id = "id";
+        Brand existing = new Brand("OldName");
+        existing.setBrandId(id);
+
+        Brand updatedEntity = new Brand("NewName");
+        updatedEntity.setBrandId(id);
+
+        BrandDTO input = new BrandDTO(id, "NewName");
+        BrandDTO expected = new BrandDTO(id, "NewName");
+
+        when(repository.findById(id)).thenReturn(Optional.of(existing));
+        when(repository.save(any(Brand.class))).thenReturn(updatedEntity);
+
+        // Act
+        BrandDTO actual = service.update(id, input);
+
+        // Assert
+        assertThat(actual).isEqualTo(expected);
+    }
+    @Test
+    public void update_brandDoesNotExist_throwsException() {
+        // Arrange
+        when(repository.findById("missing")).thenReturn(Optional.empty());
+
+        BrandDTO input = new BrandDTO("missing", "Name");
+
+        // Assert
+        assertThrows(ResponseStatusException.class,
+                () -> service.update("missing", input));
+
+        verify(repository, times(0)).save(any());
     }
 
-    // Brand Updates
-    @Test
-    public void testUpdates() {
-        // Check successful update
-        // Check for when Brand doesn't exist
-        // Check for incomplete information in dto
-    }
 
-    // Brand  Deletion
+/*  ----------------------
+    Brand Deletion Tests
+    ---------------------- */
+
     @Test
-    public void testDeletion() {
-        // Check successful deletion
-        // Check for when Brand doesn't exist
+    public void happyPath_delete_callsRepositoryDelete() {
+        // Arrange
+        Brand brand = new Brand("something");
+        brand.setBrandId("id");
+        when(repository.findById("id")).thenReturn(Optional.of(brand));
+
+        // Act
+        service.delete("id");
+
+        // Assert
+        verify(repository).deleteById("id");
+    }
+    @Test
+    public void delete_brandDoesNotExist() {
+        // Act
+        service.delete("id");
+
+        // Assert
+        verify(repository, times(0)).deleteById("id");
     }
 }
