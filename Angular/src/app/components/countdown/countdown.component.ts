@@ -19,7 +19,7 @@ export class CountdownComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.interval = setInterval(() => {
       this.updateCountdown();
-    }, 1000);
+    });
   }
 
   updateCountdown() {
