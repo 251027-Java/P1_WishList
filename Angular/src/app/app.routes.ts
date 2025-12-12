@@ -5,6 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { Auth } from './services/auth';
 import { ViewWishlistComponent } from './components/view-wishlist/view-wishlist.component';
 import { EditWishlistComponent } from './components/edit-wishlist/edit-wishlist.component';
+import { CountdownComponent } from './components/countdown/countdown.component';
 
 export const routes: Routes = [
     {
@@ -29,6 +30,10 @@ export const routes: Routes = [
     {
         path:"home",
         component:HomeComponent,
+    },
+    {
+        path:"countdown",
+        component:CountdownComponent,
     },
     {
         path: '**',
