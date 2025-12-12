@@ -21,11 +21,20 @@
     font-weight: 600;
     margin: 0 1rem;
     font-size: .9rem;
-    transition: color 1s ease;
+    transition: color .75s ease;
 }
 
 .nav-center .nav-link:hover {
     color:rgb(150, 150, 150)
+}
+
+.btn-logout {
+    font-family: 'DM Sans';
+    font-weight: 600;
+    margin-top: 3rem;
+    margin-right: 1rem;
+    font-size: .9rem;
+    cursor: pointer;
 }
 
 /* The translucent pill container */
