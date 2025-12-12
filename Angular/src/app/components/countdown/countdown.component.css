@@ -1,0 +1,34 @@
+body{
+    background: linear-gradient(45deg, #b22222 0%, #006400 100%);
+}
+
+.title{
+    text-align: center;
+    color: white;
+    font-family: 'DM Sans';
+    padding-top:150px;
+}
+
+.countdown {
+    padding-top: 50px;
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    font-family: 'DM Sans';
+}
+
+.time-box {
+    text-align: center;
+}
+
+.time-box span {
+    display: block;
+    color: white;
+    font-size: 5rem;
+    font-weight: 700;
+}
+
+.time-box label {
+    font-size: 2rem;
+    color: #dbdbdb;
+}

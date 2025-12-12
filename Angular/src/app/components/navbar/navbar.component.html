@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand fixed-top clean-nav">
+  <div class="container-fluid position-relative">
+
+    <!-- Left title -->
+    <span class="navbar-brand nav-title position-absolute start-0 ms-4">Santa’s Wishlist</span>
+
+    <!-- Centered nav -->
+    <nav class="floating-nav-container">
+        <ul class="navbar-nav d-flex flex-row justify-content-center nav-center">
+            <li class="nav-item"><a class="nav-link" routerLink="home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="dashboard">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="browse">Browse</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="countdown">Christmas Countdown</a></li>
+        </ul>
+    </nav>
+
+    <!-- Logout button -->
+    <div *ngIf="isAuthenticated(); else login" class="d-flex position-absolute end-0 me-4">
+        <button class="btn btn-logout btn-outline-dark" type="logout" (click)="logout()">Logout</button>
+    </div>
+
+    <!-- Login button -->
+    <ng-template #login>
+        <div class="d-flex position-absolute end-0 me-4">
+            <button class="btn btn-logout btn-dark" routerLink="">Login</button>
+        </div>
+    </ng-template>
+
+  </div>
+</nav>

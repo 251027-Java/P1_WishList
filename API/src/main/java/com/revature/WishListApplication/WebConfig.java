@@ -1,4 +1,4 @@
-package com.revature.ExpenseReport;
+package com.revature.WishListApplication;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -21,6 +21,6 @@ public class WebConfig implements WebMvcConfigurer {
         // that are scanning requests as they come in
         reg.addInterceptor(basicAuthInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/hello");
+                .excludePathPatterns("/api/items");
     }
 }

@@ -1,8 +1,10 @@
 package com.revature.WishListApplication.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,17 +23,28 @@ public class UserService {
         return repository.findAll().stream().map(this::UserToDto).toList();
     }
 
-    public List<UserDTO> searchByUsername(String username){
-        return repository.findByUserUsername(username).stream().map(this::UserToDto).toList();
+    public UserDTO searchByUsername(String username){
+        return repository.findByUserUsername(username)
+                .map(this::UserToDto)
+                .orElse(null);
     }
 
     public UserDTO create(UserWOIDDTO dto){
         User entity = new User(dto.userUsername(), dto.userPassword());
+
+        // Make sure username is available
+        if (repository.findByUserUsername(entity.getUserUsername()).isPresent()) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(422), "Username " +
+                    "already exists");
+        }
+
         return UserToDto(repository.save(entity));
     }
 
     public UserDTO getById(String id){
-        return UserToDto(repository.findById(id).get());
+        return repository.findById(id)
+                .map(this::UserToDto)
+                .orElse(null);
     }
     
     public UserDTO update(String id, UserDTO dto){
@@ -43,7 +56,8 @@ public class UserService {
     }
 
     public void delete(String id){
-        repository.deleteById(id);
+        if(repository.findById(id).isPresent())
+            repository.deleteById(id);
     }
 
     private UserDTO UserToDto(User user){

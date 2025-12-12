@@ -31,7 +31,9 @@ public class ItemService {
     }
 
     public ItemDTO getById(String id){
-        return ItemToDto(repository.findById(id).get());
+        return repository.findById(id)
+                .map(this::ItemToDto)
+                .orElse(null);
     }
     
     public ItemDTO update(String id, ItemDTO dto){
@@ -44,7 +46,8 @@ public class ItemService {
     }
 
     public void delete(String id){
-        repository.deleteById(id);
+        if(repository.findById(id).isPresent())
+            repository.deleteById(id);
     }
 
     private ItemDTO ItemToDto(Item item){
