@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import {WishlistComponent} from './components/wishlist/wishlist.component';
 import { LoginSignupComponent } from './components/login-signup/login-signup.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
@@ -35,6 +36,10 @@ export const routes: Routes = [
         path:"countdown",
         component:CountdownComponent,
     },
+  {
+    path:"wishlist",
+    component:WishlistComponent,
+  },
     {
         path: '**',
         redirectTo: () => ''
