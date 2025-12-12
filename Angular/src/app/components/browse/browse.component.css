@@ -1,0 +1,46 @@
+.browse-container {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .search-box {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  .items-list {
+    max-height: 400px;
+    overflow-y: auto;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+  }
+
+  .item-card {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .item-card h4 {
+    margin: 0 0 5px;
+    font-size: 18px;
+  }
+
+  .item-card p {
+    margin: 0;
+    color: #666;
+  }
+
+  .loader {
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    color: #888;
+  }
