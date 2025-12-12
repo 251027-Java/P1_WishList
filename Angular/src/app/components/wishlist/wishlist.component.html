@@ -1,0 +1,32 @@
+<div class="w-full px-6">
+  <div class="flex flex-col items-center w-full mb-12">
+  <h1
+    class="text-[136px] text-center mx-auto leading-[0.9]"
+    style="font-family: 'Playfair Display', serif;"
+  >
+    Christmas Wishlist
+  </h1>
+    <!-- Decorative Candy Cane Image -->
+    <img src="assets/CandyCanes.jpeg"
+         alt="Candy canes"
+         class="mt-12 w-32 opacity-90">
+  </div>
+
+
+    <!-- Wishlist Items Section -->
+    <!-- The outer rectangle with a red background and rounded corners -->
+    <div class="rectangle" style="background-color:#9C7878; width:100%; height:1424px; border-radius:16px; display:flex; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
+      <!-- The inner white rectangle with rounded corners -->
+      <div class="rectangle" style="background-color:#FFFFFF; width:90%; height:100%; max-height:1300px; border-radius:16px; padding:20px; box-sizing:border-box;">
+        <h3
+          class="text-[35px]"
+          style="font-family: 'Playfair Display', serif;"
+        >
+          Your Wishlist Items:
+        </h3>
+        <ul>
+          <li *ngFor="let item of wishlistService.wishlistItems">{{item}}</li>
+        </ul>
+        </div>
+      </div>
+</div>
