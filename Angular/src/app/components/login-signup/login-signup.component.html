@@ -8,14 +8,14 @@
             <h3 class="mb-5" style="color: white;">Sign in</h3>
 
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="text" id="inputUsername" class="form-control form-control-lg" placeholder="Username" />
+              <input type="text" id="inputUsername" class="form-control form-control-lg" placeholder="Username" [(ngModel)]="username"/>
             </div>
 
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="password" id="inputPassword" class="form-control form-control-lg" placeholder="Password" />
+              <input type="password" id="inputPassword" class="form-control form-control-lg" placeholder="Password" [(ngModel)]="password"/>
             </div>
 
-            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" id="sign-in-btn" type="submit">Sign In</button>
+            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" id="sign-in-btn" (click)="login()">Sign In</button>
 
             <hr class="my-4">
 
