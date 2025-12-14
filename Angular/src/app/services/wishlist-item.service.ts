@@ -24,8 +24,9 @@ export class WishlistItemService {
 
   getWishlistItems(searchTerm?: string) {
     const url = searchTerm
-      ? `http://localhost:8080/api/items?name=${searchTerm}`
+      ? `http://localhost:8080/api/items/search?name=${searchTerm}`
       : `http://localhost:8080/api/items`;
+    console.log('Fetching items from URL:', url);
     return this.http.get<WishlistItem[]>(url).pipe(
       map(data => data.map((item: any) => ({
         id: item.itemId,

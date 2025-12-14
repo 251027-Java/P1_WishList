@@ -31,7 +31,6 @@ export class BrowseComponent implements OnInit {
     if (reset) {
       this.page = 1;
       this.items = [];
-      this.endReached = false;
     }
 
     this.wishlistItemService.getWishlistItems(this.searchTerm).subscribe({
@@ -48,9 +47,12 @@ export class BrowseComponent implements OnInit {
     });
   }
 
-  onSearch(): void {
+  onSearchChange(): void {
+    console.log('Service search term:', this.searchTerm);
+    this.endReached = false;
     this.loadItems(true);
   }
+
 
   onScroll(event: any): void {
     const { scrollTop, scrollHeight, clientHeight } = event.target;
