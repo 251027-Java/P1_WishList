@@ -7,6 +7,7 @@ import { Auth } from './services/auth';
 import { ViewWishlistComponent } from './components/view-wishlist/view-wishlist.component';
 import { EditWishlistComponent } from './components/edit-wishlist/edit-wishlist.component';
 import { CountdownComponent } from './components/countdown/countdown.component';
+import { BrowseComponent } from './components/browse/browse.component';
 
 export const routes: Routes = [
     {
@@ -31,6 +32,10 @@ export const routes: Routes = [
     {
         path:"home",
         component:HomeComponent,
+    },
+    {
+        path:"browse",
+        component:BrowseComponent,
     },
     {
         path:"countdown",

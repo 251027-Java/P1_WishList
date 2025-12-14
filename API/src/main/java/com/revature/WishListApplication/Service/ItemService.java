@@ -25,6 +25,10 @@ public class ItemService {
         return repository.findByItemName(name).stream().map(this::ItemToDto).toList();
     }
 
+    public List<ItemDTO> searchByBrand(String brand){
+        return repository.findByBrand(brand).stream().map(this::ItemToDto).toList();
+    }
+
     public ItemDTO create(ItemWOIDDTO dto){
         Item entity = new Item(dto.itemName(), dto.brand(), dto.itemPrice());
         return ItemToDto(repository.save(entity));
