@@ -28,11 +28,15 @@ export class WishlistItemService {
       : `http://localhost:8080/api/items`;
     return this.http.get<WishlistItem[]>(url).pipe(
       map(data => data.map((item: any) => ({
-        id: item.id,
-        name: item.name,
+        id: item.itemId,
+        name: item.itemName,
         brand: item.brand,
-        price: item.price
+        price: item.itemPrice
       })))
     );
+  }
+
+  addToWishlist(item: WishlistItem) {
+    this.wishlistItems.push(item);
   }
 }

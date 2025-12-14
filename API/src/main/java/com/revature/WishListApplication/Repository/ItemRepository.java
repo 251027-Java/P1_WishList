@@ -7,4 +7,5 @@ import com.revature.WishListApplication.Model.Item;
 
 public interface ItemRepository extends JpaRepository<Item, String> {
     List<Item> findByItemName(String name);
+    List<Item> findByBrand(String brand);
 }

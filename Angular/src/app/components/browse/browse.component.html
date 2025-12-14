@@ -1,20 +1,21 @@
-<div class="browse-container">
-  <input
-    type="text"
-    placeholder="Search..."
-    [(ngModel)]="searchTerm"
-    (input)="onSearch()"
-    class="search-box"
-  />
+<div class="page-wrapper">
+  <div class="browse-container">
+    <input
+      type="text"
+      placeholder="Search..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+      class="search-box"
+    />
 
-  <div class="items-list" (scroll)="onScroll($event)">
-    <div *ngFor="let item of items" class="item-card">
-      <h4>{{ item.name }}</h4>
-      <p>{{ item.description }}</p>
-    </div>
+    <div class="items-list" (scroll)="onScroll($event)">
+      <div *ngFor="let item of items" class="item-card">
+        <h4>{{ item.name }}</h4>
+        <p>${{ item.price }}</p>
+        <button class="btn btn-outline-dark" (click)="addToWishlist(item)">Add to Wishlist</button>
+      </div>
 
-    <div class="loader" *ngIf="loading">
-      Loading...
+      <div class="loader" *ngIf="loading">Loading...</div>
     </div>
   </div>
 </div>

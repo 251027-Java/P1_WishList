@@ -2,6 +2,7 @@ package com.revature.WishListApplication.Controller;
 
 import com.revature.WishListApplication.Service.ItemService;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ItemController {
     private final ItemService service;
 
@@ -29,9 +31,21 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public List<ItemDTO> search(@RequestParam String merchant) {
-        return service.searchByItemname(merchant);
+    public List<ItemDTO> search(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String brand) {
+
+        if (name != null) {
+            return service.searchByItemname(name);
+        }
+
+        if (brand != null) {
+            return service.searchByBrand(brand);
+        }
+
+        return List.of();
     }
+
 
     @PostMapping
     public ItemDTO create(@RequestBody ItemWOIDDTO itemdto){

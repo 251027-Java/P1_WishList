@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { WishlistItem } from '../../interfaces/wishlist-item';
 import { WishlistItemService } from '../../services/wishlist-item.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-browse',
+  imports: [CommonModule, FormsModule],
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.css']
 })
@@ -54,5 +57,9 @@ export class BrowseComponent implements OnInit {
     const nearBottom = scrollTop + clientHeight >= scrollHeight - 50;
 
     if (nearBottom) this.loadItems();
+  }
+
+  addToWishlist(item: WishlistItem): void {
+    this.wishlistItemService.addToWishlist(item);
   }
 }
