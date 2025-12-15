@@ -1,0 +1,126 @@
+.home-container {
+    min-height: 100vh;
+    background-color: white;
+    padding-top: 80px;
+}
+
+
+/* Main Content Area */
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+
+/* Red Section */
+
+.red-section {
+    background-color: #DC143C;
+    padding: 20px 40px;
+    text-align: center;
+    width: 100%;
+}
+
+.welcome-title {
+    font-family: 'Mountains of Christmas', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    color: black;
+    margin: 0;
+    letter-spacing: -1px;
+}
+
+
+/* Green Section */
+
+.green-section {
+    background-color: #228B22;
+    padding: 10px 40px;
+    text-align: center;
+    width: 100%;
+}
+
+.description-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    color: black;
+    margin: 0;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+/* Bottom Section with Images */
+
+.bottom-section {
+    background-color: white;
+    padding: 10px 40px;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+}
+
+
+/* Bottom Left Section */
+
+.left-section {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.countdown-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    color: black;
+    line-height: 1.8;
+    width: 100%;
+}
+
+.countdown-text p {
+    margin: 0.5rem 0;
+}
+
+.santa-note {
+    font-style: italic;
+    color: #555;
+}
+
+.giftbox-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.image-giftboxes {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+
+/* Bottom Right Section */
+
+.right-section {
+    width: 75%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.image-santa {
+    width: 100%;
+    max-width: 100%;
+    max-height: 50vh;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+}
