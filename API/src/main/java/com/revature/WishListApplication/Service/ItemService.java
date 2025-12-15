@@ -22,7 +22,7 @@ public class ItemService {
     }
 
     public List<ItemDTO> searchByItemname(String name){
-        return repository.findByItemName(name).stream().map(this::ItemToDto).toList();
+        return repository.findByItemNameStartingWithIgnoreCase(name).stream().map(this::ItemToDto).toList();
     }
 
     public List<ItemDTO> searchByBrand(String brand){

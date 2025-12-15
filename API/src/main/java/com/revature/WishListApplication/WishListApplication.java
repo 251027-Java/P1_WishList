@@ -37,6 +37,11 @@ public class WishListApplication {
     CommandLineRunner seedData (PasswordEncoder encoder, UserRepository userRepository,
                                 ItemRepository itemRepository, BrandRepository brandRepository, WishlistRepository wishlistRepository, WishlistItemRepository wishlistItemRepository) {
         return args -> {
+
+            if (itemRepository.count() > 0) {
+                return;
+            }
+
             var u1 = new User("brody", encoder.encode("password1"));
             var u2 = new User("manu", encoder.encode("password2"));
             var u3 = new User("natalia", encoder.encode("password3"));

@@ -40,4 +40,12 @@ export class WishlistItemService {
   addToWishlist(item: WishlistItem) {
     this.wishlistItems.push(item);
   }
+
+  removeFromWishlist(item: WishlistItem) {
+    this.wishlistItems = this.wishlistItems.filter(i => i.id !== item.id);
+  }
+
+  isInWishlist(item: WishlistItem): boolean {
+    return this.wishlistItems.some(i => i.id === item.id);
+  }
 }

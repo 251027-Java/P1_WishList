@@ -8,11 +8,31 @@
       class="search-box"
     />
 
+    <div class="header-card">
+        <h5>Name</h5>
+        <h5>Brand</h5>
+        <h5>Price</h5>
+        
+      </div>
+
     <div class="items-list" (scroll)="onScroll($event)">
       <div *ngFor="let item of items" class="item-card">
         <h4>{{ item.name }}</h4>
+        <h4>{{ item.brand.brandName }}</h4>
         <p>${{ item.price }}</p>
-        <button class="btn btn-outline-dark" (click)="addToWishlist(item)">Add to Wishlist</button>
+
+        <!-- Add button -->
+        <div *ngIf="!isInWishlist(item); else remove" class="action">
+          <button class="btn btn-outline-dark" (click)="addToWishlist(item)">Add to Wishlist</button>
+        </div>
+
+        <!-- Remove button -->
+        <ng-template #remove>
+          <div class="action">
+            <button class="btn btn-outline-dark" (click)="removeFromWishlist(item)">Remove from Wishlist</button>
+          </div>
+        </ng-template>
+        
       </div>
 
       <div class="loader" *ngIf="loading">Loading...</div>
