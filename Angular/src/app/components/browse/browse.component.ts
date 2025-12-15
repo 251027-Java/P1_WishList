@@ -64,4 +64,12 @@ export class BrowseComponent implements OnInit {
   addToWishlist(item: WishlistItem): void {
     this.wishlistItemService.addToWishlist(item);
   }
+
+  removeFromWishlist(item: WishlistItem): void {
+    this.wishlistItemService.removeFromWishlist(item);
+  }
+
+  isInWishlist(item: WishlistItem): boolean {
+    return this.wishlistItemService.isInWishlist(item);
+  }
 }

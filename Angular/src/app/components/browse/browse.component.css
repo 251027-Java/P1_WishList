@@ -9,7 +9,7 @@
 
 .browse-container {
     width: 100%;
-    max-width: 500px;
+    max-width: 700px;
     background: #ffffff;
     padding: 20px;
     border-radius: 10px;
@@ -35,28 +35,42 @@
     overflow-y: auto;
 }
 
+.header-card {
+    display: grid;
+    grid-template-columns: 1.2fr 1.2fr 2fr;
+    align-items: center;
+    padding: 12px;
+    position: relative;
+}
+
 .item-card {
+    display: grid;
+    grid-template-columns: 3fr 2fr 2fr 4fr auto;
+    align-items: center;
     padding: 12px;
     border-bottom: 1px solid #eee;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    position: relative;
 }
 
 .item-card h4 {
-    margin: 8px 0 0;
     font-size: 15px;
-    flex: 1;
 }
 
 .item-card p {
-    margin: 4px 0 0;
-    margin-right: 50px;
+    text-align: right;
     color: #666;
 }
 
+.item-card .action {
+    position: absolute;
+    right: 12px;
+    display: flex;
+    justify-content: flex-end;
+    width: auto;
+}
+
 .item-card button {
-    white-space: nowrap;
+    width: fit-content;
 }
 
 .loader {
