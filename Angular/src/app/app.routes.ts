@@ -36,15 +36,17 @@ export const routes: Routes = [
     {
         path:"browse",
         component:BrowseComponent,
+        canMatch: [Auth]
     },
     {
         path:"countdown",
         component:CountdownComponent,
     },
-  {
-    path:"wishlist",
-    component:WishlistComponent,
-  },
+    {
+        path:"wishlist",
+        component:WishlistComponent,
+        canMatch: [Auth]
+    },
     {
         path: '**',
         redirectTo: () => ''

@@ -105,7 +105,7 @@ public class ItemServiceTests {
         Item item = new Item("Laptop", brand, new BigDecimal("999.99"));
         item.setItemId("123");
 
-        when(repository.findByItemName("Laptop")).thenReturn(List.of(item));
+        when(repository.findByItemNameStartingWithIgnoreCase("Laptop")).thenReturn(List.of(item));
 
         List<ItemDTO> expected = List.of(new ItemDTO(item.getItemId(),
                 item.getItemName(), item.getBrand(), item.getItemPrice()));
@@ -116,12 +116,12 @@ public class ItemServiceTests {
         // Assert
         assertEquals(1, result.size());
         assertThat(result).usingRecursiveFieldByFieldElementComparator().isEqualTo(expected);
-        verify(repository, times(1)).findByItemName("Laptop");
+        verify(repository, times(1)).findByItemNameStartingWithIgnoreCase("Laptop");
     }
     @Test
     public void searchItemname_itemDoesNotExist_returnsEmptyList() {
         // Arrange
-        when(repository.findByItemName("missing")).thenReturn(List.of());
+        when(repository.findByItemNameStartingWithIgnoreCase("missing")).thenReturn(List.of());
 
         // Act
         List<ItemDTO> actual = service.searchByItemname("missing");
