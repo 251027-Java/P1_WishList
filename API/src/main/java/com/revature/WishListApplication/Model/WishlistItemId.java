@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Embeddable
 @Data
-public class WishlistItemId implements Serializable {
+public class WishlistItemID implements Serializable {
     @ManyToOne()
     @JoinColumn(name = "wishlistId")
     @ToString.Exclude
