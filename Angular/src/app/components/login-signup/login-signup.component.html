@@ -5,7 +5,8 @@
         <div class="card shadow-2-strong" id="sign-in-card">
           <div class="card-body p-5 text-center">
 
-            <h3 class="mb-5" style="color: white;">Sign in</h3>
+            <h3 class="mb-4" style="color: white;">Sign in</h3>
+            <div [hidden]="loginStatus" style="text-align: left;color:darkred;font-size: larger;" >Authentication Failed</div>
 
             <div data-mdb-input-init class="form-outline mb-4">
               <input type="text" id="inputUsername" class="form-control form-control-lg" placeholder="Username" [(ngModel)]="username"/>
