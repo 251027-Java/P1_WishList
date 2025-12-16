@@ -20,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
         // adding interceptors to the list of active/running interceptors
         // that are scanning requests as they come in
         reg.addInterceptor(basicAuthInterceptor)
-                .addPathPatterns("/api/**", "http://localhost:4200/**")
-                .excludePathPatterns("/api/items");
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/items", "/api/users/**");
     }
 }
