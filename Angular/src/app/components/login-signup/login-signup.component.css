@@ -1,0 +1,20 @@
+#page {
+    background-image: url(../../../../public/star-bg.jpg);
+    background-color: rgba(221, 244, 217, 0.5);
+    background-blend-mode: saturation;
+    font-family: Quartz;
+}
+
+#sign-in-card {
+    border-width:thick;
+    border-radius: 2rem;
+    border-color: white;
+    background-color: #dc5b5b;
+    box-shadow: 1rem 1rem 2.5rem;
+}
+
+#sign-in-btn {
+    border: 0;
+    background-color: rgb(221, 243, 217);
+    color: rgb(127, 127, 127);
+}
