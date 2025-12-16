@@ -26,17 +26,8 @@ export class LoginSignupComponent {
   login() {
     // send username and password to api
     this.findUser().subscribe({next: data => {
-      this.checkName = data.userUsername
-      this.checkPassword = data.userPassword;
-      if (this.username === this.checkName && this.password === this.checkPassword) {
-        alert("username and password accepted");
-        this.auth.authenticateUser();
-        this.router.navigateByUrl("dashboard");
-      }
-      else
-      {
-        this.loginStatus = false;
-      }
+      this.auth.authenticateUser();
+      this.router.navigateByUrl("dashboard");
     },
     error: () => {
       this.loginStatus = false;
@@ -45,8 +36,10 @@ export class LoginSignupComponent {
   }
 
   findUser():Observable<User> {
+    const encoded = btoa(`${this.username}:${this.password}`);
+
     const headers = new HttpHeaders({
-      Authorization: `Basic ${this.username}:${this.password}`
+      Authorization: `Basic ${encoded}`
     });
 
     return this.http.get<User>(`http://localhost:8080/api/users/search?username=${this.username}`, { headers }).pipe(

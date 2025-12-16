@@ -3,6 +3,7 @@ package com.revature.WishListApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -17,8 +18,18 @@ public class WebConfig implements WebMvcConfigurer {
     // Method
     @Override
     public void addInterceptors(InterceptorRegistry reg) {
-        // adding interceptors to the list of active/running interceptors
-        // that are scanning requests as they come in
-        reg.addInterceptor(basicAuthInterceptor).addPathPatterns("/api/**");
+        reg.addInterceptor(basicAuthInterceptor)
+        .addPathPatterns("/api/**")
+        .excludePathPatterns("/**/OPTIONS");
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:4200")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("Authorization", "Content-Type")
+                .exposedHeaders("Authorization")
+                .allowCredentials(true);
     }
 }
