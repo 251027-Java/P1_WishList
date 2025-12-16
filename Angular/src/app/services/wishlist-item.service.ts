@@ -3,11 +3,13 @@ import { WishlistItem } from '../interfaces/wishlist-item';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
 import { Auth } from './auth';
+import { Wishlist } from '../interfaces/wishlist';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WishlistItemService {
+  private wishlistMap: Map<string, Set<string>> = new Map();
   wishlistItems: WishlistItem[] = [];
 
   constructor(private http:HttpClient, private auth:Auth){}
@@ -40,15 +42,29 @@ export class WishlistItemService {
     );
   }
 
-  addToWishlist(item: WishlistItem) {
-    this.wishlistItems.push(item);
+  addToWishlist(item: WishlistItem, wishlist: Wishlist) {
+    const set = this.wishlistMap.get(wishlist.id) ?? new Set<string>();
+    set.add(item.id);
+    this.wishlistMap.set(wishlist.id, set);
   }
 
-  removeFromWishlist(item: WishlistItem) {
-    this.wishlistItems = this.wishlistItems.filter(i => i.id !== item.id);
+  removeFromWishlist(item: WishlistItem, wishlist: Wishlist) {
+    const set = this.wishlistMap.get(wishlist.id);
+    if (set) {
+      set.delete(item.id);
+      if (set.size === 0) this.wishlistMap.delete(wishlist.id);
+      else this.wishlistMap.set(wishlist.id, set);
+    }
   }
 
-  isInWishlist(item: WishlistItem): boolean {
-    return this.wishlistItems.some(i => i.id === item.id);
+  isInWishlist(item: WishlistItem, wishlist: Wishlist): boolean {
+    const set = this.wishlistMap.get(wishlist.id);
+    return !!set && set.has(item.id);
+  }
+
+  // helper to get item ids for a wishlist
+  getItemIdsForWishlist(wishlistId: string): string[] {
+    const set = this.wishlistMap.get(wishlistId);
+    return set ? Array.from(set) : [];
   }
 }
