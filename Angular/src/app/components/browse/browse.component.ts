@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Wishlist } from '../../interfaces/wishlist';
 import { Auth } from '../../services/auth';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { WishlistService } from '../../services/wishlist.service';
 
 @Component({
@@ -81,10 +81,6 @@ export class BrowseComponent implements OnInit {
     this.wishlistItemService.removeFromWishlist(item, wishlist);
   }
 
-  isInWishlist(item: WishlistItem, wishlist: Wishlist): boolean {
-    return this.wishlistItemService.isInWishlist(item, wishlist);
-  }
-
   loadWishlists(): void {
     // prevent concurrent wishlist requests
     if (this.wlLoading) return;
@@ -148,6 +144,10 @@ export class BrowseComponent implements OnInit {
     }
 
     this.loadWishlists();
+  }
+
+  isInWishlist(item: WishlistItem, wishlist: Wishlist): Observable<boolean> {
+    return this.wishlistItemService.isInWishlist(item, wishlist);
   }
 
   onAddToWishlist(wishlist: Wishlist, item: WishlistItem): void {

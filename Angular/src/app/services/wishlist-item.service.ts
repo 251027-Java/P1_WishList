@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WishlistItem } from '../interfaces/wishlist-item';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Auth } from './auth';
 import { Wishlist } from '../interfaces/wishlist';
 
@@ -9,7 +9,6 @@ import { Wishlist } from '../interfaces/wishlist';
   providedIn: 'root'
 })
 export class WishlistItemService {
-  private wishlistMap: Map<string, Set<string>> = new Map();
   wishlistItems: WishlistItem[] = [];
 
   constructor(private http:HttpClient, private auth:Auth){}
@@ -43,28 +42,31 @@ export class WishlistItemService {
   }
 
   addToWishlist(item: WishlistItem, wishlist: Wishlist) {
-    const set = this.wishlistMap.get(wishlist.id) ?? new Set<string>();
-    set.add(item.id);
-    this.wishlistMap.set(wishlist.id, set);
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+    return this.http.post<any>(
+      `http://localhost:8080/api/wishlist-items`,
+      { itemId: item.id, wishlistId: wishlist.id },
+      { headers }
+    );
   }
+
 
   removeFromWishlist(item: WishlistItem, wishlist: Wishlist) {
-    const set = this.wishlistMap.get(wishlist.id);
-    if (set) {
-      set.delete(item.id);
-      if (set.size === 0) this.wishlistMap.delete(wishlist.id);
-      else this.wishlistMap.set(wishlist.id, set);
-    }
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+    return this.http.delete<any>(
+      `http://localhost:8080/api/wishlist-items/${wishlist.id}/${item.id}`,
+      { headers }
+    );
   }
 
-  isInWishlist(item: WishlistItem, wishlist: Wishlist): boolean {
-    const set = this.wishlistMap.get(wishlist.id);
-    return !!set && set.has(item.id);
-  }
 
-  // helper to get item ids for a wishlist
-  getItemIdsForWishlist(wishlistId: string): string[] {
-    const set = this.wishlistMap.get(wishlistId);
-    return set ? Array.from(set) : [];
+  isInWishlist(item: WishlistItem, wishlist: Wishlist): Observable<boolean> {
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+    return this.http.get<WishlistItem[]>(
+      `http://localhost:8080/api/wishlist-items/${wishlist.id}`,
+      { headers }
+    ).pipe(
+      map(items => items.some(i => i.id === item.id))
+    );
   }
 }

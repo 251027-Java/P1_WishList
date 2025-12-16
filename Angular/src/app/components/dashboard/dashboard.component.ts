@@ -166,9 +166,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // Navigation
   navigateToWishlist(wishlist: Wishlist): void {
-    this.router.navigate(['/view-wishlists'], { 
-      queryParams: { id: wishlist.id, name: wishlist.name } 
-    });
+    this.router.navigate(['/wishlist', wishlist.id]);
   }
 
   // Validation

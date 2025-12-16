@@ -26,7 +26,7 @@
           </button>
           <div *ngIf="openDropdownId === item.id" class="dropdown-menu" [ngStyle]="getDropdownStyle()">
             <div *ngFor="let wishlist of wishlists" class="dropdown-item">
-              <div *ngIf="!isInWishlist(item, wishlist); else inWishlist">
+              <div *ngIf="!(isInWishlist(item, wishlist) | async); else inWishlist">
                 <button class="btn btn-outline-dark" (click)="onAddToWishlist(wishlist, item)">Add to {{ wishlist.name }}</button>
               </div>
               <ng-template #inWishlist>

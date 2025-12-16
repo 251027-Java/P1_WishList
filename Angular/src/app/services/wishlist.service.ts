@@ -42,6 +42,18 @@ export class WishlistService {
     return this.http.delete(`http://localhost:8080/api/wishlists/${id}`, {headers});
   }
 
+  getWishlistItems(wishlistId: String){
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+        return this.http.get<WishlistItem[]>(`http://localhost:8080/api/wishlist-items/search?wishlistId=${wishlistId}`, {headers}).pipe(
+          map(data => data.map((item: any) => ({
+            id: item.itemId,
+            name: item.itemName,
+            brand:item.brand,
+            price: item.itemPrice
+          })))
+        );
+  }
+
 
 }
 
