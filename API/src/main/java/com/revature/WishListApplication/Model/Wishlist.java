@@ -1,5 +1,6 @@
 package com.revature.WishListApplication.Model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -22,9 +23,13 @@ public class Wishlist {
     @ToString.Exclude
     private User user;
 
+    @Column(name = "wishlistName")
+    private String wishlistName;
+
     public Wishlist() {}
 
-    public Wishlist(User user) {
+    public Wishlist(User user, String wishlistName) {
         this.user = user;
+        this.wishlistName = wishlistName;
     }
 }
