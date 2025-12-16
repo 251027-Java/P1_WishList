@@ -43,6 +43,7 @@ public class BrandController {
         return service.getById(id);
     }
 
+
     @PutMapping("/{id}")
     public BrandDTO update(@PathVariable String id, @RequestBody BrandDTO dto){
         return service.update(id, dto);

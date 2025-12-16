@@ -19,8 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry reg) {
         // adding interceptors to the list of active/running interceptors
         // that are scanning requests as they come in
-        reg.addInterceptor(basicAuthInterceptor)
-                .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/items/**");
+        reg.addInterceptor(basicAuthInterceptor).addPathPatterns("/api/**");
     }
 }
