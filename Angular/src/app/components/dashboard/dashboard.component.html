@@ -1,1 +1,68 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+    <!-- Main Title and CREATE Button -->
+    <div class="title-section">
+        <h1 class="main-title">Your Wishlists</h1>
+        <button class="create-button" (click)="openCreatePopup()">CREATE</button>
+    </div>
+    <!-- Wishlists Container -->
+    <div class="wishlists-container">
+        <div class="wishlists-inner">
+            <div *ngFor="let wishlist of wishlists" class="wishlist-entry">
+                <div class="wishlist-content" (click)="navigateToWishlist(wishlist)">
+                    <span class="wishlist-name">{{ wishlist.name }}</span>
+                </div>
+                <div class="options-container" (click)="$event.stopPropagation()">
+                    <button class="options-button" (click)="toggleDropdown(wishlist.id)">
+                        <span class="dots">⋯</span>
+                    </button>
+                    <div *ngIf="openDropdownId === wishlist.id" class="dropdown-menu" style="display: block !important; visibility: visible !important;">
+                        <button class="dropdown-item" (click)="openRenamePopup(wishlist)">RENAME</button>
+                        <button class="dropdown-item" (click)="openDeletePopup(wishlist)">DELETE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- CREATE Popup -->
+    <div *ngIf="showCreatePopup" class="popup-overlay" (click)="closeCreatePopup()">
+        <div class="popup-content" (click)="$event.stopPropagation()">
+            <h2 class="popup-title">What is the name of your new wishlist?</h2>
+            <input type="text" class="popup-input" [(ngModel)]="newWishlistName" (keyup.enter)="onCreateSubmit()" (keyup.escape)="closeCreatePopup()" maxlength="12" placeholder="Enter wishlist name" autofocus />
+            <div *ngIf="newWishlistName && !isValidWishlistName(newWishlistName)" class="validation-error">
+                Name must be 1-12 characters and contain only letters, numbers, and symbols
+            </div>
+            <div class="popup-buttons">
+                <button class="popup-button cancel" (click)="closeCreatePopup()">Cancel</button>
+                <button class="popup-button submit" (click)="onCreateSubmit()" [disabled]="!isValidWishlistName(newWishlistName)">
+          Create
+        </button>
+            </div>
+        </div>
+    </div>
+    <!-- RENAME Popup -->
+    <div *ngIf="showRenamePopup" class="popup-overlay" (click)="closeRenamePopup()">
+        <div class="popup-content" (click)="$event.stopPropagation()">
+            <h2 class="popup-title">What is the new name of this wishlist?</h2>
+            <input type="text" class="popup-input" [(ngModel)]="renameWishlistName" (keyup.enter)="onRenameSubmit()" (keyup.escape)="closeRenamePopup()" maxlength="12" placeholder="Enter new name" autofocus />
+            <div *ngIf="renameWishlistName && !isValidWishlistName(renameWishlistName)" class="validation-error">
+                Name must be 1-12 characters and contain only letters, numbers, and symbols
+            </div>
+            <div class="popup-buttons">
+                <button class="popup-button cancel" (click)="closeRenamePopup()">Cancel</button>
+                <button class="popup-button submit" (click)="onRenameSubmit()" [disabled]="!isValidWishlistName(renameWishlistName)">
+          Rename
+        </button>
+            </div>
+        </div>
+    </div>
+    <!-- DELETE Popup -->
+    <div *ngIf="showDeletePopup" class="popup-overlay" (click)="closeDeletePopup()">
+        <div class="popup-content" (click)="$event.stopPropagation()">
+            <h2 class="popup-title">Are you sure you want to DELETE this wishlist?</h2>
+            <div class="popup-buttons">
+                <button class="popup-button cancel" (click)="onDeleteCancel()">NO</button>
+                <button class="popup-button delete" (click)="onDeleteConfirm()">YES</button>
+            </div>
+        </div>
+    </div>
+</div>
