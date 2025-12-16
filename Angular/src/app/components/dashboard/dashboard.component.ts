@@ -85,10 +85,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const userId = this.auth.getCurrentUser()?.userId;
     if (!userId) return;
     if (this.isValidWishlistName(this.newWishlistName)) {
-      this.wishlistService.createWishlist(this.newWishlistName, userId);
-      this.closeCreatePopup();
+      this.wishlistService.createWishlist(this.newWishlistName, userId).subscribe({
+        next: () => {
+          this.closeCreatePopup();
+          this.loadWishlists();
+        },
+        error: () => {
+          // handle error if desired
+        }
+      });
     }
-    this.loadWishlists();
   }
 
   // RENAME functionality
@@ -107,10 +113,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onRenameSubmit(): void {
     if (this.wishlistToRename && this.isValidWishlistName(this.renameWishlistName)) {
-      this.wishlistService.updateWishlist(this.wishlistToRename.id, this.renameWishlistName);
-      this.closeRenamePopup();
+      this.wishlistService.updateWishlist(this.wishlistToRename.id, this.renameWishlistName).subscribe({
+        next: () => {
+          this.closeRenamePopup();
+          this.loadWishlists();
+        },
+        error: () => {
+          // handle error
+        }
+      });
     }
-    this.loadWishlists();
   }
 
   // DELETE functionality
@@ -127,10 +139,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onDeleteConfirm(): void {
     if (this.wishlistToDelete) {
-      this.wishlistService.deleteWishlist(this.wishlistToDelete.id);
-      this.closeDeletePopup();
+      this.wishlistService.deleteWishlist(this.wishlistToDelete.id).subscribe({
+        next: () => {
+          this.closeDeletePopup();
+          this.loadWishlists();
+        },
+        error: () => {
+          // handle error
+        }
+      });
     }
-    this.loadWishlists();
   }
 
   onDeleteCancel(): void {

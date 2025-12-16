@@ -27,7 +27,7 @@ export class WishlistService {
 
   createWishlist(name: String, userId: String):Observable<Wishlist>{
     const headers = { Authorization: this.auth.getAuthHeader() || '' };
-    const wishlist = { name, user: { userId } };
+    const wishlist = { wishlistName: name, user: { userId } };
     return this.http.post<Wishlist>(`http://localhost:8080/api/wishlists`, wishlist, {headers});
   }
 
