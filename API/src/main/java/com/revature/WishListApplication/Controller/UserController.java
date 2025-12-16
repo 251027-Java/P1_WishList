@@ -30,6 +30,7 @@ public class UserController {
         return service.getAllUsers();
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/search")
     public UserDTO search(@RequestParam String username) {
         return service.searchByUsername(username);
