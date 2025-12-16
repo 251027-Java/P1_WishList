@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { WishlistService } from '../../services/wishlist.service';
 import { Wishlist } from '../../interfaces/wishlist';
 import { Subscription } from 'rxjs';
+import { Auth } from '../../services/auth';
 @Component({
   selector: 'app-dashboard',
   imports: [CommonModule, FormsModule, RouterModule],
@@ -29,16 +30,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Dropdown state
   openDropdownId: string | null = null;
 
+  page = 1;
+  loading = false;
+  endReached = false;
+
   constructor(
     private wishlistService: WishlistService,
-    private router: Router
+    private router: Router,
+    private auth: Auth
   ) {}
 
   ngOnInit(): void {
-    this.subscription = this.wishlistService.wishlists$.subscribe(
-      wishlists => this.wishlists = wishlists
-    );
+    this.loadWishlists();
   }
+
+  loadWishlists(): void {
+    this.page = 1;
+    this.wishlists = [];
+    const userId = this.auth.getCurrentUser()?.userId;
+    console.log('Current User ID:', userId);
+    if (!userId) return;
+    this.subscription = this.wishlistService.getWishlists(userId).subscribe({
+      next: (data) => {
+        if (!data.length) {
+          this.endReached = true;
+        } else {
+          console.log('Fetched wishlists:', data);
+          this.wishlists = [...this.wishlists, ...data];
+          this.page++;
+        }
+        this.loading = false;
+      },
+      error: () => (this.loading = false)
+    });
+  }
+  
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
@@ -56,9 +82,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   onCreateSubmit(): void {
+    const userId = this.auth.getCurrentUser()?.userId;
+    if (!userId) return;
     if (this.isValidWishlistName(this.newWishlistName)) {
-      this.wishlistService.createWishlist(this.newWishlistName);
-      this.closeCreatePopup();
+      this.wishlistService.createWishlist(this.newWishlistName, userId).subscribe({
+        next: () => {
+          this.closeCreatePopup();
+          this.loadWishlists();
+        },
+        error: () => {
+          // handle error if desired
+        }
+      });
     }
   }
 
@@ -78,8 +113,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onRenameSubmit(): void {
     if (this.wishlistToRename && this.isValidWishlistName(this.renameWishlistName)) {
-      this.wishlistService.updateWishlist(this.wishlistToRename.id, this.renameWishlistName);
-      this.closeRenamePopup();
+      this.wishlistService.updateWishlist(this.wishlistToRename.id, this.renameWishlistName).subscribe({
+        next: () => {
+          this.closeRenamePopup();
+          this.loadWishlists();
+        },
+        error: () => {
+          // handle error
+        }
+      });
     }
   }
 
@@ -97,8 +139,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onDeleteConfirm(): void {
     if (this.wishlistToDelete) {
-      this.wishlistService.deleteWishlist(this.wishlistToDelete.id);
-      this.closeDeletePopup();
+      this.wishlistService.deleteWishlist(this.wishlistToDelete.id).subscribe({
+        next: () => {
+          this.closeDeletePopup();
+          this.loadWishlists();
+        },
+        error: () => {
+          // handle error
+        }
+      });
     }
   }
 
@@ -117,9 +166,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // Navigation
   navigateToWishlist(wishlist: Wishlist): void {
-    this.router.navigate(['/view-wishlists'], { 
-      queryParams: { id: wishlist.id, name: wishlist.name } 
-    });
+    this.router.navigate(['/wishlist', wishlist.id]);
   }
 
   // Validation

@@ -10,7 +10,6 @@
     <img src="assets/CandyCanes.jpeg"
          alt="Candy canes"
          class="mt-12 w-32 opacity-90">
-  </div>
 
 
     <!-- Wishlist Items Section -->
@@ -25,8 +24,12 @@
           Your Wishlist Items:
         </h3>
         <ul>
-          <li *ngFor="let item of wishlistService.wishlistItems">{{item}}</li>
+          <div *ngFor="let item of items">
+            <li>{{item.name}}</li>
+          </div>
+          
         </ul>
-        </div>
       </div>
+    </div>
+  </div>
 </div>

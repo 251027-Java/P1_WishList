@@ -55,7 +55,7 @@ export const routes: Routes = [
         component:CountdownComponent,
     },
     {
-        path:"wishlist",
+        path:"wishlist/:id",
         component:WishlistComponent,
         canMatch: [authGuard]
 >>>>>>> 5ca9ccb2c5fd9bcb9a8255f49e49f5c9e377b1e3

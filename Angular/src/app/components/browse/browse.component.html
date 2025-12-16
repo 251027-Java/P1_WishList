@@ -12,8 +12,7 @@
         <h5>Name</h5>
         <h5>Brand</h5>
         <h5>Price</h5>
-        
-      </div>
+    </div>
 
     <div class="items-list" (scroll)="onScroll($event)">
       <div *ngFor="let item of items" class="item-card">
@@ -21,21 +20,26 @@
         <h4>{{ item.brand.brandName }}</h4>
         <p>${{ item.price }}</p>
 
-        <!-- Add button -->
-        <div *ngIf="!isInWishlist(item); else remove" class="action">
-          <button class="btn btn-outline-dark" (click)="addToWishlist(item)">Add to Wishlist</button>
+        <div class="action" (click)="$event.stopPropagation()">
+          <button class="btn btn-outline-dark" (click)="toggleDropdown($event, item)">
+              <span class="dots">Add/Remove Item</span>
+          </button>
+          <div *ngIf="openDropdownId === item.id" class="dropdown-menu" [ngStyle]="getDropdownStyle()">
+            <div *ngFor="let wishlist of wishlists" class="dropdown-item">
+              <div *ngIf="!(isInWishlist(item, wishlist) | async); else inWishlist">
+                <button class="btn btn-outline-dark" (click)="onAddToWishlist(wishlist, item)">Add to {{ wishlist.name }}</button>
+              </div>
+              <ng-template #inWishlist>
+                <button class="btn btn-outline-dark" (click)="onRemoveFromWishlist(wishlist, item)">Remove from {{ wishlist.name }}</button>
+              </ng-template>
+            </div>
+          </div>
         </div>
 
-        <!-- Remove button -->
-        <ng-template #remove>
-          <div class="action">
-            <button class="btn btn-outline-dark" (click)="removeFromWishlist(item)">Remove from Wishlist</button>
-          </div>
-        </ng-template>
-        
-      </div>
+      
 
-      <div class="loader" *ngIf="loading">Loading...</div>
+        <div class="loader" *ngIf="loading">Loading...</div>
+      </div>
     </div>
   </div>
 </div>

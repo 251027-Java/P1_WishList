@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { WishlistItem } from '../interfaces/wishlist-item';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { Auth } from './auth';
+import { Wishlist } from '../interfaces/wishlist';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +11,11 @@ import { map } from 'rxjs';
 export class WishlistItemService {
   wishlistItems: WishlistItem[] = [];
 
-  constructor(private http:HttpClient){}
+  constructor(private http:HttpClient, private auth:Auth){}
 
   getWishlistItem(id: string) {
-    return this.http.get<WishlistItem[]>(`http://localhost:8080/api/items/${id}`).pipe(
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+    return this.http.get<WishlistItem[]>(`http://localhost:8080/api/items/${id}`, {headers}).pipe(
       map<any, WishlistItem>(data => ({
         id:data.id,
         name:data.name,
@@ -27,7 +30,8 @@ export class WishlistItemService {
       ? `http://localhost:8080/api/items/search?name=${searchTerm}`
       : `http://localhost:8080/api/items`;
     console.log('Fetching items from URL:', url);
-    return this.http.get<WishlistItem[]>(url).pipe(
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+    return this.http.get<WishlistItem[]>(url, {headers}).pipe(
       map(data => data.map((item: any) => ({
         id: item.itemId,
         name: item.itemName,
@@ -37,15 +41,32 @@ export class WishlistItemService {
     );
   }
 
-  addToWishlist(item: WishlistItem) {
-    this.wishlistItems.push(item);
+  addToWishlist(item: WishlistItem, wishlist: Wishlist) {
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+    return this.http.post<any>(
+      `http://localhost:8080/api/wishlist-items`,
+      { itemId: item.id, wishlistId: wishlist.id },
+      { headers }
+    );
   }
 
-  removeFromWishlist(item: WishlistItem) {
-    this.wishlistItems = this.wishlistItems.filter(i => i.id !== item.id);
+
+  removeFromWishlist(item: WishlistItem, wishlist: Wishlist) {
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+    return this.http.delete<any>(
+      `http://localhost:8080/api/wishlist-items/${wishlist.id}/${item.id}`,
+      { headers }
+    );
   }
 
-  isInWishlist(item: WishlistItem): boolean {
-    return this.wishlistItems.some(i => i.id === item.id);
+
+  isInWishlist(item: WishlistItem, wishlist: Wishlist): Observable<boolean> {
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+    return this.http.get<WishlistItem[]>(
+      `http://localhost:8080/api/wishlist-items/${wishlist.id}`,
+      { headers }
+    ).pipe(
+      map(items => items.some(i => i.id === item.id))
+    );
   }
 }

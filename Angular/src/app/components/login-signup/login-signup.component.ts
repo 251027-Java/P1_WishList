@@ -26,7 +26,8 @@ export class LoginSignupComponent {
   login() {
     // send username and password to api
     this.findUser().subscribe({next: data => {
-      this.auth.authenticateUser();
+      this.auth.authenticateUser(this.username, this.password);
+      this.auth.setCurrentUser(data);
       this.router.navigateByUrl("dashboard");
     },
     error: () => {
