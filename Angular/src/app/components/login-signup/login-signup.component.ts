@@ -45,11 +45,14 @@ export class LoginSignupComponent {
   }
 
   findUser():Observable<User> {
+    const credentials = `${this.username}:${this.password}`;
+    const encodedCredentials = btoa(credentials);
+
     const headers = new HttpHeaders({
-      Authorization: `Basic ${this.username}:${this.password}`
+      Authorization: `Basic ${encodedCredentials}`
     });
 
-    return this.http.get<User>(`http://localhost:8080/api/users/search?username=${this.username}`, { headers }).pipe(
+    return this.http.get<User>(`http://localhost:8080/api/users/search?username=${this.username}`, { headers, withCredentials:true }).pipe(
       map<any, User>(data => ({
         userId:data.userId,
         userUsername:data.userUsername,
