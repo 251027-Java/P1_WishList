@@ -17,12 +17,12 @@ export const routes: Routes = [
     {
         path:"dashboard",
         component:DashboardComponent,
-        // canMatch: [Auth]
+        canMatch: [Auth]
     },
     {
         path:"view-wishlists",
         component:ViewWishlistComponent,
-        // canMatch: [Auth]
+        canMatch: [Auth]
     },
     {
         path:"edit-wishlist",
