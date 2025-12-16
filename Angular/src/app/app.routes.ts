@@ -19,6 +19,29 @@ export const routes: Routes = [
         canMatch: [authGuard]
     },
     {
+<<<<<<< HEAD
+        path:"view-wishlists",
+        component:ViewWishlistComponent,
+        canMatch: [authGuard]
+    },
+    {
+        path:"edit-wishlist",
+        component:EditWishlistComponent,
+        canMatch: [authGuard]
+    },
+    {
+          path:"browse",
+          component:BrowseComponent,
+          canMatch: [Auth]
+    },
+    {
+          path:"countdown",
+          component:CountdownComponent,
+    },
+    {
+        path:"home",
+        component:HomeComponent
+=======
         path:"home",
         component:HomeComponent,
     },
@@ -35,6 +58,7 @@ export const routes: Routes = [
         path:"wishlist",
         component:WishlistComponent,
         canMatch: [authGuard]
+>>>>>>> 5ca9ccb2c5fd9bcb9a8255f49e49f5c9e377b1e3
     },
     {
         path: '**',

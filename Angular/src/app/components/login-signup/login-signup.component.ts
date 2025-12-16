@@ -42,7 +42,7 @@ export class LoginSignupComponent {
       Authorization: `Basic ${encoded}`
     });
 
-    return this.http.get<User>(`http://localhost:8080/api/users/search?username=${this.username}`, { headers }).pipe(
+    return this.http.get<User>(`http://localhost:8080/api/users/search?username=${this.username}`, { headers, withCredentials:true }).pipe(
       map<any, User>(data => ({
         userId:data.userId,
         userUsername:data.userUsername,
