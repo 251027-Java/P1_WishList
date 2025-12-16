@@ -28,7 +28,7 @@ public class Wishlist {
 
     public Wishlist() {}
 
-    public Wishlist(User user, String wishlistName) {
+    public Wishlist(String wishlistName, User user) {
         this.user = user;
         this.wishlistName = wishlistName;
     }

@@ -10,12 +10,16 @@ import com.revature.WishListApplication.Controller.ItemDTO;
 import com.revature.WishListApplication.Controller.ItemWOIDDTO;
 import com.revature.WishListApplication.Model.Item;
 import com.revature.WishListApplication.Repository.ItemRepository;
+import com.revature.WishListApplication.Repository.WishlistItemRepository;
 
 @Service
 public class ItemService {
     private final ItemRepository repository;
 
-    public ItemService(ItemRepository repository){ this.repository = repository;}
+
+    public ItemService(ItemRepository repository, WishlistItemRepository wishlistItemRepository){
+        this.repository = repository;
+    }
 
     public List<ItemDTO> getAllItems(){
         return repository.findAll().stream().map(this::ItemToDto).toList();

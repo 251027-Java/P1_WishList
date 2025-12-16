@@ -29,18 +29,10 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public List<ItemDTO> search(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String brand) {
-
+    public List<ItemDTO> search(@RequestParam(required = false) String name) {
         if (name != null) {
             return service.searchByItemname(name);
         }
-
-        if (brand != null) {
-            return service.searchByBrand(brand);
-        }
-
         return List.of();
     }
 

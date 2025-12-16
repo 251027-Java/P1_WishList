@@ -55,10 +55,10 @@ public class WishListApplication {
             var i3 = new Item("GeForce RTX 5090", b3, new BigDecimal(2999.99));
             var i4 = new Item("iPhone 16", b1, new BigDecimal(999.99));
             itemRepository.saveAll(List.of(i1, i2, i3, i4));
-            var w1 = new Wishlist(u1, "Brody's Wishlist");
-            var w2 = new Wishlist(u2, "Manu's Wishlist");
-            var w3 = new Wishlist(u3, "Natalia's Wishlist");
-            var w4 = new Wishlist(u1, "Brody's Second Wishlist");
+            var w1 = new Wishlist("Brody's Wishlist", u1);
+            var w2 = new Wishlist("Manu's Wishlist", u2);
+            var w3 = new Wishlist("Natalia's Wishlist", u3);
+            var w4 = new Wishlist("Brody's Second Wishlist", u1);
             wishlistRepository.saveAll(List.of(w1, w2, w3, w4));
             var wi1 = new WishlistItem(i1, w1);
             var wi2 = new WishlistItem(i2, w1);
