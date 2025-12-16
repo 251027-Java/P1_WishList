@@ -1,6 +1,8 @@
+import { User } from "./user";
+
 export interface Wishlist {
     id: string;
     name: string;
-    emoji: string;
+    user: User;
 }
 

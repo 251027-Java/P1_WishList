@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { WishlistItem } from '../interfaces/wishlist-item';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
+import { Auth } from './auth';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,11 @@ import { map } from 'rxjs';
 export class WishlistItemService {
   wishlistItems: WishlistItem[] = [];
 
-  constructor(private http:HttpClient){}
+  constructor(private http:HttpClient, private auth:Auth){}
 
   getWishlistItem(id: string) {
-    return this.http.get<WishlistItem[]>(`http://localhost:8080/api/items/${id}`).pipe(
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+    return this.http.get<WishlistItem[]>(`http://localhost:8080/api/items/${id}`, {headers}).pipe(
       map<any, WishlistItem>(data => ({
         id:data.id,
         name:data.name,
@@ -27,7 +29,8 @@ export class WishlistItemService {
       ? `http://localhost:8080/api/items/search?name=${searchTerm}`
       : `http://localhost:8080/api/items`;
     console.log('Fetching items from URL:', url);
-    return this.http.get<WishlistItem[]>(url).pipe(
+    const headers = { Authorization: this.auth.getAuthHeader() || '' };
+    return this.http.get<WishlistItem[]>(url, {headers}).pipe(
       map(data => data.map((item: any) => ({
         id: item.itemId,
         name: item.itemName,

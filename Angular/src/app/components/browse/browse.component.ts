@@ -53,7 +53,6 @@ export class BrowseComponent implements OnInit {
     this.loadItems(true);
   }
 
-
   onScroll(event: any): void {
     const { scrollTop, scrollHeight, clientHeight } = event.target;
     const nearBottom = scrollTop + clientHeight >= scrollHeight - 50;
