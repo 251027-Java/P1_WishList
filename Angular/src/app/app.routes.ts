@@ -4,11 +4,9 @@ import { LoginSignupComponent } from './components/login-signup/login-signup.com
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
 import { Auth } from './services/auth';
-import { ViewWishlistComponent } from './components/view-wishlist/view-wishlist.component';
-import { EditWishlistComponent } from './components/edit-wishlist/edit-wishlist.component';
-import { authGuard } from './guards/auth.guard';
 import { CountdownComponent } from './components/countdown/countdown.component';
 import { BrowseComponent } from './components/browse/browse.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -21,6 +19,7 @@ export const routes: Routes = [
         canMatch: [authGuard]
     },
     {
+<<<<<<< HEAD
         path:"view-wishlists",
         component:ViewWishlistComponent,
         canMatch: [authGuard]
@@ -42,6 +41,24 @@ export const routes: Routes = [
     {
         path:"home",
         component:HomeComponent
+=======
+        path:"home",
+        component:HomeComponent,
+    },
+    {
+        path:"browse",
+        component:BrowseComponent,
+        canMatch: [authGuard]
+    },
+    {
+        path:"countdown",
+        component:CountdownComponent,
+    },
+    {
+        path:"wishlist",
+        component:WishlistComponent,
+        canMatch: [authGuard]
+>>>>>>> 5ca9ccb2c5fd9bcb9a8255f49e49f5c9e377b1e3
     },
     {
         path: '**',
