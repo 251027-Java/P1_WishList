@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { Auth } from './services/auth';
 import { CountdownComponent } from './components/countdown/countdown.component';
 import { BrowseComponent } from './components/browse/browse.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -15,7 +16,7 @@ export const routes: Routes = [
     {
         path:"dashboard",
         component:DashboardComponent,
-        canMatch: [Auth]
+        canMatch: [authGuard]
     },
     {
         path:"home",
@@ -24,7 +25,7 @@ export const routes: Routes = [
     {
         path:"browse",
         component:BrowseComponent,
-        canMatch: [Auth]
+        canMatch: [authGuard]
     },
     {
         path:"countdown",
@@ -33,7 +34,7 @@ export const routes: Routes = [
     {
         path:"wishlist",
         component:WishlistComponent,
-        canMatch: [Auth]
+        canMatch: [authGuard]
     },
     {
         path: '**',

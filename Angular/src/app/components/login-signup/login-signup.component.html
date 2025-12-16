@@ -1,1 +1,30 @@
-<p>login-signup works!</p>
+<section class="vh-100" id="page">
+  <div class="container py-5 h-100" style="opacity: 1;">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" id="sign-in-card">
+          <div class="card-body p-5 text-center">
+
+            <h3 class="mb-4" style="color: white;">Sign in</h3>
+            <div [hidden]="loginStatus" style="text-align: left;color:darkred;font-size: larger;" >Authentication Failed</div>
+
+            <div data-mdb-input-init class="form-outline mb-4">
+              <input type="text" id="inputUsername" class="form-control form-control-lg" placeholder="Username" [(ngModel)]="username"/>
+            </div>
+
+            <div data-mdb-input-init class="form-outline mb-4">
+              <input type="password" id="inputPassword" class="form-control form-control-lg" placeholder="Password" [(ngModel)]="password"/>
+            </div>
+
+            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" id="sign-in-btn" (click)="login()">Sign In</button>
+
+            <hr class="my-4">
+
+            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg btn-block btn-primary" id="sign-in-btn" type="submit"> Or Sign Up</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

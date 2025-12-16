@@ -27,7 +27,14 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
     // Methods
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request,
+                            HttpServletResponse response,
+                            Object handler) throws Exception {
+
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true; // allow CORS preflight
+        }
+
         String authHeader = request.getHeader("Authorization");
         String error = "";
 
@@ -36,7 +43,7 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
             // decode the header to a base 64 string
             String b64c = authHeader.substring(6);
             byte[] decoded = Base64.getDecoder().decode(b64c);
-            String creds = new String( decoded, StandardCharsets.UTF_8);
+            String creds = new String(decoded, StandardCharsets.UTF_8);
 
             // split the "username:password"
             String[] parts = creds.split(":", 2);
@@ -50,13 +57,8 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
                 // check if the user is in the db
                 Optional<User> user = repo.findByUserUsername(username);
                 System.out.println("THE USER: " + user.isPresent());
-
-//                // check if the password is correct
-//                if (user.isPresent() && user.get().getPassword().equals(password)) {
-//                    return true;
-//                }
-                // updated check with hashing check.
                 if(user.isPresent() && passwordEncoder.matches(password, user.get().getUserPassword())){
+                    System.out.println("PASSWORD: CORRECT");
                     return true;
                 }
             }
