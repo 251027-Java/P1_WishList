@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Entity
-@IdClass(WishlistItemID.class)
+@IdClass(WishlistItemId.class)
 @Table(name = "WishlistItem")
 @Data
 public class WishlistItem {

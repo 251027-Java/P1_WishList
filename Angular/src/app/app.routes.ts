@@ -4,6 +4,9 @@ import { LoginSignupComponent } from './components/login-signup/login-signup.com
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
 import { Auth } from './services/auth';
+import { ViewWishlistComponent } from './components/view-wishlist/view-wishlist.component';
+import { EditWishlistComponent } from './components/edit-wishlist/edit-wishlist.component';
+import { authGuard } from './guards/auth.guard';
 import { CountdownComponent } from './components/countdown/countdown.component';
 import { BrowseComponent } from './components/browse/browse.component';
 
@@ -15,25 +18,30 @@ export const routes: Routes = [
     {
         path:"dashboard",
         component:DashboardComponent,
-        canMatch: [Auth]
+        canMatch: [authGuard]
+    },
+    {
+        path:"view-wishlists",
+        component:ViewWishlistComponent,
+        canMatch: [authGuard]
+    },
+    {
+        path:"edit-wishlist",
+        component:EditWishlistComponent,
+        canMatch: [authGuard]
+    },
+    {
+          path:"browse",
+          component:BrowseComponent,
+          canMatch: [Auth]
+    },
+    {
+          path:"countdown",
+          component:CountdownComponent,
     },
     {
         path:"home",
-        component:HomeComponent,
-    },
-    {
-        path:"browse",
-        component:BrowseComponent,
-        canMatch: [Auth]
-    },
-    {
-        path:"countdown",
-        component:CountdownComponent,
-    },
-    {
-        path:"wishlist",
-        component:WishlistComponent,
-        canMatch: [Auth]
+        component:HomeComponent
     },
     {
         path: '**',
